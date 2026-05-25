@@ -1,0 +1,264 @@
+/* --- CSS DESIGN SPEC SYSTEM DEFINITIONS --- */
+:root {
+  --color-dark-grayish-blue: hsl(217, 19%, 35%);
+  --color-desaturated-blue: hsl(214, 17%, 51%);
+  --color-grayish-blue: hsl(212, 23%, 69%);
+  --color-light-grayish-blue: hsl(210, 46%, 95%);
+  --font-main: 'Manrope', sans-serif;
+}
+
+/* --- STRUCTURE RESET --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  font-size: 13px;
+  background-color: var(--color-light-grayish-blue);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+/* --- BEM COMPONENT: ARTICLE-CARD --- */
+.article-card {
+  background: #ffffff;
+  border-radius: 10px;
+  max-width: 327px;
+  overflow: visible; 
+  box-shadow: 0 40px 40px -10px rgba(201, 211, 225, 0.4);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.article-card__image-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.article-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 0 20%;
+}
+
+.article-card__content {
+  padding: 32px 32px 20px 32px;
+}
+
+.article-card__title {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--color-dark-grayish-blue);
+  margin-bottom: 12px;
+}
+
+.article-card__excerpt {
+  color: var(--color-desaturated-blue);
+  line-height: 1.54;
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+
+.article-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.article-card__author-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.article-card__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.article-card__author-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-dark-grayish-blue);
+  margin-bottom: 2px;
+}
+
+.article-card__post-date {
+  color: var(--color-grayish-blue);
+  font-weight: 500;
+  display: block;
+}
+
+/* --- ACTION CONTROLLER LAYER ELEMENTS --- */
+.article-card__share-trigger {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-light-grayish-blue);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, filter 0.2s ease;
+  position: relative;
+  z-index: 20; /* High z-index ensures it sits on top of the mobile drawer overlay */
+}
+
+.article-card__share-icon {
+  width: 15px;
+  height: 13px;
+}
+
+/* Hover & Active System States */
+.article-card__share-trigger:hover,
+.article-card__share-trigger--active {
+  background-color: var(--color-desaturated-blue);
+}
+
+.article-card__share-trigger:hover .article-card__share-icon,
+.article-card__share-trigger--active .article-card__share-icon {
+  filter: brightness(0) invert(1);
+}
+
+/* --- DRAWER OVERLAY PANEL (MOBILE CONFIGURATION) --- */
+.article-card__share-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Spans the exact height of the mobile footer area */
+  background-color: var(--color-dark-grayish-blue);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 80px 0 32px; /* Extra right padding prevents items from clashing with the share button */
+  gap: 21px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  z-index: 10;
+}
+
+.article-card__share-panel--show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.article-card__share-label {
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  color: var(--color-grayish-blue);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.article-card__social-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.article-card__social-link {
+  display: flex;
+  align-items: center;
+}
+
+.article-card__social-img {
+  width: 20px;
+  height: 20px;
+}
+
+/* --- RESPONSIVE MEDIA ADJUSTMENTS (DESKTOP) --- */
+@media (min-width: 800px) {
+  .article-card {
+    max-width: 730px;
+    flex-direction: row;
+  }
+
+  .article-card__image-wrapper {
+    width: 285px;
+    height: 100%;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+  }
+
+  .article-card__image {
+    object-position: left center;
+  }
+
+  .article-card__content {
+    flex: 1;
+    padding: 40px 40px 32px 40px;
+  }
+
+  .article-card__title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  /* Structural transformation to floating Speech Bubble Popover */
+  .article-card__share-panel {
+    width: 248px;
+    height: 55px;
+    border-radius: 10px;
+    bottom: 90px;
+    left: auto;
+    right: -68px; 
+    justify-content: center;
+    padding: 0; 
+    box-shadow: 0px 10px 10px rgba(201, 211, 225, 0.3);
+    transform: translate3d(0, 10px, 0);
+  }
+
+  .article-card__share-panel--show {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Triangle Pointer Arrow for Desktop */
+  .article-card__share-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 8px 0;
+    border-style: solid;
+    border-color: var(--color-dark-grayish-blue) transparent;
+    display: block;
+    width: 0;
+  }
+}
+
+/* --- ACCREDITATION --- */
+.attribution { 
+  font-size: 11px; 
+  text-align: center; 
+  margin-top: 24px;
+}
+.attribution a { 
+  color: hsl(228, 45%, 44%); 
+  text-decoration: none;
+  font-weight: 700;
+}
+.attribution a:hover {
+  text-decoration: underline;
+}
